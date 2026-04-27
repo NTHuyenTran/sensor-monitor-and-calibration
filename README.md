@@ -18,7 +18,6 @@ A minimalist and intuitive interface focusing on real-time measurement parameter
 * **Weight/Mass:** 0 - 5 kg (Loadcell)
 * **Angle:** 0 - 300° (Potentiometer)
 * **Speed:** 0 - 500 RPM (Encoder)
-* **Distance:** 0 - 0.5m (Ultrasonic) & 0 - 1m (Laser)
 
 ### 2. 📊 Data Logging
 * **Format:** Automatically exports data to `.csv` or `.txt` files.
