@@ -38,11 +38,11 @@ The project is organized into functional modules:
 
 ```text
 ├── docs/                  # Documentation, block diagrams & algorithms
-├── data-logging/          # Stores saved data files (.csv)
+├── data/                  # Stores saved data files (.csv)
 │   ├── saved_logs/        # Actual measurement logs
 │   └── sample_data.csv    # Sample data for testing
-└── gui/                   # Visual Studio source code
-    ├── SensorGui.sln      # Main Solution file
-    └── SensorApp/         # WinForms Project
+└── src/                   # Visual Studio source code
+    ├── SensorMonitorAndCalibration.sln      # Main Solution file
+    └── SensorMonitorAndCalibration/         # WinForms Project
         ├── Forms/         # User Interfaces (UI)
         └── Modules/       # Processing Logic (Serial, Logging, Calib)
