@@ -18,7 +18,6 @@ A minimalist and intuitive interface focusing on real-time measurement parameter
 * **Weight/Mass:** 0 - 5 kg (Loadcell)
 * **Angle:** 0 - 300° (Potentiometer)
 * **Speed:** 0 - 500 RPM (Encoder)
-* **Distance:** 0 - 0.5m (Ultrasonic) & 0 - 1m (Laser)
 
 ### 2. 📊 Data Logging
 * **Format:** Automatically exports data to `.csv` or `.txt` files.
@@ -37,12 +36,12 @@ Provides a dedicated interface for the **2-point calibration** process to elimin
 The project is organized into functional modules:
 
 ```text
-├── docs/                  # Documentation, block diagrams & algorithms
-├── data-logging/          # Stores saved data files (.csv)
-│   ├── saved_logs/        # Actual measurement logs
-│   └── sample_data.csv    # Sample data for testing
-└── gui/                   # Visual Studio source code
-    ├── SensorGui.sln      # Main Solution file
-    └── SensorApp/         # WinForms Project
-        ├── Forms/         # User Interfaces (UI)
-        └── Modules/       # Processing Logic (Serial, Logging, Calib)
+├── docs/                                    # Documentation, block diagrams & algorithms
+├── data/                                    # Stores saved data files (.csv)
+│   ├── saved_logs/                          # Actual measurement logs
+│   └── sample_data.csv                      # Sample data for testing
+└── src/                                     # Visual Studio source code
+    ├── SensorMonitorAndCalibration.sln      # Main Solution file
+    └── SensorMonitorAndCalibration/         # WinForms Project
+        ├── Forms/                           # User Interfaces (UI)
+        └── Modules/                         # Processing Logic (Serial, Logging, Calib)
