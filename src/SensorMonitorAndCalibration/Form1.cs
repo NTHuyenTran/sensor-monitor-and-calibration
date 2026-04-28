@@ -6,7 +6,6 @@ namespace SensorMonitorAndCalibration
 {
     public partial class Form1 : Form
     {
-        // Dùng đầy đủ namespace để tránh ambiguous Timer
         private readonly System.Windows.Forms.Timer updateTimer = new System.Windows.Forms.Timer();
         private readonly Random rng = new Random();
 
@@ -23,7 +22,6 @@ namespace SensorMonitorAndCalibration
         public Form1()
         {
             InitializeComponent();
-            // Load event đã được gán trong designer (đã sửa thành Form1_Load)
         }
 
         private void Form1_Load(object? sender, EventArgs e)
@@ -79,6 +77,14 @@ namespace SensorMonitorAndCalibration
             updateTimer.Interval = 1000;
             updateTimer.Tick += OnTimerTick;
             updateTimer.Start();
+
+            // Nhúng CalibrationControl vào tabCalib
+            CalibrationControl calibControl = new CalibrationControl { Dock = DockStyle.Fill };
+            tabCalib.Controls.Add(calibControl);
+
+            // Nhúng ChartControl vào tabChart
+            ChartControl chartControl = new ChartControl { Dock = DockStyle.Fill };
+            tabChart.Controls.Add(chartControl);
         }
 
         private void OnTimerTick(object? sender, EventArgs e)
