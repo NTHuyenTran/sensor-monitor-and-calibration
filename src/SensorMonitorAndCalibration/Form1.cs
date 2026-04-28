@@ -110,5 +110,15 @@ namespace SensorMonitorAndCalibration
                 ? Color.FromArgb(200, 60, 30)
                 : Color.FromArgb(20, 20, 20);
         }
+
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void formsPlot1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
