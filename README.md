@@ -22,7 +22,7 @@ A minimalist and intuitive interface focusing on real-time measurement parameter
 ### 2. 📊 Data Logging
 * **Format:** Automatically exports data to `.csv` or `.txt` files.
 * **Mechanism:** Periodic data saving (Default: every 10 seconds) with timestamps.
-* **Location:** Data is centrally managed in the `/data-logging` directory.
+* **Location:** Data is centrally managed in the `/data` directory.
 
 ### 3. 🎯 Calibration System
 Provides a dedicated interface for the **2-point calibration** process to eliminate system errors:
