@@ -111,44 +111,5 @@ namespace SensorMonitorAndCalibration
                 : Color.FromArgb(20, 20, 20);
         }
 
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void formsPlot1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tableLayoutMain_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void btn_chose_1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btn_chose_2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btn_chose_3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btn_pc_1_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }

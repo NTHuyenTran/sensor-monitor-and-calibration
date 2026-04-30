@@ -240,7 +240,6 @@
             tableLayoutMain.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutMain.Size = new Size(1125, 505);
             tableLayoutMain.TabIndex = 1;
-            tableLayoutMain.Paint += tableLayoutMain_Paint;
             // 
             // pnlLeft
             // 
@@ -582,7 +581,6 @@
             btnSensor1.TabIndex = 1;
             btnSensor1.Text = "Sensor 1 - Thermistor";
             btnSensor1.UseVisualStyleBackColor = true;
-            btnSensor1.Click += button1_Click;
             // 
             // lblSelectSensor
             // 
@@ -627,7 +625,6 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.Size = new Size(1125, 499);
             tableLayoutPanel1.TabIndex = 5;
-            tableLayoutPanel1.Paint += tableLayoutPanel1_Paint;
             // 
             // panel3
             // 
@@ -977,7 +974,6 @@
             btn_pc_1.Size = new Size(29, 29);
             btn_pc_1.TabIndex = 0;
             btn_pc_1.UseVisualStyleBackColor = false;
-            btn_pc_1.Click += btn_pc_1_Click;
             // 
             // btn_dts_1
             // 
@@ -1061,7 +1057,6 @@
             btn_chose_3.TabIndex = 3;
             btn_chose_3.Text = "Sensor 3 - Encoder";
             btn_chose_3.UseVisualStyleBackColor = true;
-            btn_chose_3.Click += btn_chose_3_Click;
             // 
             // btn_chose_2
             // 
@@ -1074,7 +1069,6 @@
             btn_chose_2.TabIndex = 2;
             btn_chose_2.Text = "Sensor 2 - Potentiometer";
             btn_chose_2.UseVisualStyleBackColor = true;
-            btn_chose_2.Click += btn_chose_2_Click;
             // 
             // btn_chose_1
             // 
@@ -1087,7 +1081,6 @@
             btn_chose_1.TabIndex = 1;
             btn_chose_1.Text = "Sensor 1 - Thermistor";
             btn_chose_1.UseVisualStyleBackColor = true;
-            btn_chose_1.Click += btn_chose_1_Click;
             // 
             // label1
             // 
