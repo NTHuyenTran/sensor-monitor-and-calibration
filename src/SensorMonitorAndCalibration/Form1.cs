@@ -130,5 +130,25 @@ namespace SensorMonitorAndCalibration
         {
 
         }
+
+        private void btn_chose_1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_chose_2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_chose_3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_pc_1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
