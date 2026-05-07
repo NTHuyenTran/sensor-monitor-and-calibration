@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            panelConnect = new Panel();
             panelSensor1 = new Panel();
             panelSensor2 = new Panel();
             panelSensor3 = new Panel();
-            panelSensor4 = new Panel();
             tabControlMain = new TabControl();
             tabMonitor = new TabPage();
             statusBar = new Panel();
@@ -84,41 +84,41 @@
             pnlSensorBar.SuspendLayout();
             SuspendLayout();
             // 
+            // panelConnect
+            // 
+            panelConnect.BackColor = Color.WhiteSmoke;
+            panelConnect.BorderStyle = BorderStyle.FixedSingle;
+            panelConnect.Location = new Point(42, 25);
+            panelConnect.Name = "panelConnect";
+            panelConnect.Size = new Size(511, 200);
+            panelConnect.TabIndex = 0;
+            // 
             // panelSensor1
             // 
             panelSensor1.BackColor = Color.WhiteSmoke;
             panelSensor1.BorderStyle = BorderStyle.FixedSingle;
-            panelSensor1.Location = new Point(42, 25);
+            panelSensor1.Location = new Point(591, 25);
             panelSensor1.Name = "panelSensor1";
             panelSensor1.Size = new Size(511, 200);
-            panelSensor1.TabIndex = 0;
+            panelSensor1.TabIndex = 1;
             // 
             // panelSensor2
             // 
             panelSensor2.BackColor = Color.WhiteSmoke;
             panelSensor2.BorderStyle = BorderStyle.FixedSingle;
-            panelSensor2.Location = new Point(591, 25);
+            panelSensor2.Location = new Point(42, 248);
             panelSensor2.Name = "panelSensor2";
             panelSensor2.Size = new Size(511, 200);
-            panelSensor2.TabIndex = 1;
+            panelSensor2.TabIndex = 2;
             // 
             // panelSensor3
             // 
             panelSensor3.BackColor = Color.WhiteSmoke;
             panelSensor3.BorderStyle = BorderStyle.FixedSingle;
-            panelSensor3.Location = new Point(42, 248);
+            panelSensor3.Location = new Point(591, 248);
             panelSensor3.Name = "panelSensor3";
             panelSensor3.Size = new Size(511, 200);
-            panelSensor3.TabIndex = 2;
-            // 
-            // panelSensor4
-            // 
-            panelSensor4.BackColor = Color.WhiteSmoke;
-            panelSensor4.BorderStyle = BorderStyle.FixedSingle;
-            panelSensor4.Location = new Point(591, 248);
-            panelSensor4.Name = "panelSensor4";
-            panelSensor4.Size = new Size(511, 200);
-            panelSensor4.TabIndex = 3;
+            panelSensor3.TabIndex = 3;
             // 
             // tabControlMain
             // 
@@ -136,10 +136,10 @@
             // 
             tabMonitor.BackColor = Color.AliceBlue;
             tabMonitor.Controls.Add(statusBar);
+            tabMonitor.Controls.Add(panelConnect);
             tabMonitor.Controls.Add(panelSensor1);
             tabMonitor.Controls.Add(panelSensor2);
             tabMonitor.Controls.Add(panelSensor3);
-            tabMonitor.Controls.Add(panelSensor4);
             tabMonitor.Location = new Point(4, 29);
             tabMonitor.Name = "tabMonitor";
             tabMonitor.Padding = new Padding(3);
@@ -205,9 +205,9 @@
             btnCalc.Cursor = Cursors.Hand;
             btnCalc.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnCalc.ForeColor = Color.White;
-            btnCalc.Location = new Point(19, 422);
+            btnCalc.Location = new Point(23, 430);
             btnCalc.Name = "btnCalc";
-            btnCalc.Size = new Size(503, 38);
+            btnCalc.Size = new Size(515, 38);
             btnCalc.TabIndex = 4;
             btnCalc.Text = "Tính hệ số và Cập nhật đồ thị";
             btnCalc.UseVisualStyleBackColor = false;
@@ -222,7 +222,7 @@
             grpSpan.Controls.Add(lblRealSpan);
             grpSpan.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             grpSpan.ForeColor = Color.FromArgb(64, 64, 64);
-            grpSpan.Location = new Point(19, 279);
+            grpSpan.Location = new Point(23, 284);
             grpSpan.Name = "grpSpan";
             grpSpan.Size = new Size(503, 110);
             grpSpan.TabIndex = 3;
@@ -294,7 +294,7 @@
             grpZero.Controls.Add(lblRealZero);
             grpZero.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             grpZero.ForeColor = Color.FromArgb(64, 64, 64);
-            grpZero.Location = new Point(19, 142);
+            grpZero.Location = new Point(23, 147);
             grpZero.Name = "grpZero";
             grpZero.Size = new Size(503, 110);
             grpZero.TabIndex = 2;
@@ -362,7 +362,7 @@
             pnlLive.BorderStyle = BorderStyle.FixedSingle;
             pnlLive.Controls.Add(lblLiveRealTitle);
             pnlLive.Controls.Add(lblLiveAdcTitle);
-            pnlLive.Location = new Point(19, 52);
+            pnlLive.Location = new Point(23, 57);
             pnlLive.Name = "pnlLive";
             pnlLive.Size = new Size(503, 64);
             pnlLive.TabIndex = 1;
@@ -389,7 +389,7 @@
             // 
             lblLiveTitle.AutoSize = true;
             lblLiveTitle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblLiveTitle.Location = new Point(19, 16);
+            lblLiveTitle.Location = new Point(23, 21);
             lblLiveTitle.Name = "lblLiveTitle";
             lblLiveTitle.Size = new Size(168, 20);
             lblLiveTitle.TabIndex = 0;
@@ -413,7 +413,7 @@
             button1.Cursor = Cursors.Hand;
             button1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             button1.ForeColor = Color.White;
-            button1.Location = new Point(19, 422);
+            button1.Location = new Point(19, 430);
             button1.Name = "button1";
             button1.Size = new Size(515, 38);
             button1.TabIndex = 5;
@@ -422,7 +422,7 @@
             // 
             // formsPlotCalib
             // 
-            formsPlotCalib.Location = new Point(14, 169);
+            formsPlotCalib.Location = new Point(14, 177);
             formsPlotCalib.Name = "formsPlotCalib";
             formsPlotCalib.Size = new Size(520, 236);
             formsPlotCalib.TabIndex = 1;
@@ -434,7 +434,7 @@
             pnlResult.Controls.Add(lblStatus);
             pnlResult.Controls.Add(lblCoefA);
             pnlResult.Controls.Add(lblFormula);
-            pnlResult.Location = new Point(19, 22);
+            pnlResult.Location = new Point(19, 30);
             pnlResult.Name = "pnlResult";
             pnlResult.Size = new Size(515, 129);
             pnlResult.TabIndex = 0;
@@ -495,7 +495,7 @@
             btnSensor3.Cursor = Cursors.Hand;
             btnSensor3.FlatStyle = FlatStyle.Flat;
             btnSensor3.ForeColor = Color.MidnightBlue;
-            btnSensor3.Location = new Point(599, 9);
+            btnSensor3.Location = new Point(819, 9);
             btnSensor3.Name = "btnSensor3";
             btnSensor3.Size = new Size(190, 28);
             btnSensor3.TabIndex = 3;
@@ -507,7 +507,7 @@
             btnSensor2.Cursor = Cursors.Hand;
             btnSensor2.FlatStyle = FlatStyle.Flat;
             btnSensor2.ForeColor = Color.MidnightBlue;
-            btnSensor2.Location = new Point(367, 9);
+            btnSensor2.Location = new Point(506, 9);
             btnSensor2.Name = "btnSensor2";
             btnSensor2.Size = new Size(190, 28);
             btnSensor2.TabIndex = 2;
@@ -519,7 +519,7 @@
             btnSensor1.Cursor = Cursors.Hand;
             btnSensor1.FlatStyle = FlatStyle.Flat;
             btnSensor1.ForeColor = Color.MidnightBlue;
-            btnSensor1.Location = new Point(134, 9);
+            btnSensor1.Location = new Point(201, 9);
             btnSensor1.Name = "btnSensor1";
             btnSensor1.Size = new Size(190, 28);
             btnSensor1.TabIndex = 1;
@@ -578,10 +578,10 @@
 
         #endregion
 
+        private Panel panelConnect;
         private Panel panelSensor1;
         private Panel panelSensor2;
         private Panel panelSensor3;
-        private Panel panelSensor4;
         private TabControl tabControlMain;
         private TabPage tabMonitor;
         private TabPage tabCalib;
