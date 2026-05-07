@@ -10,6 +10,8 @@ namespace SensorMonitorAndCalibration
     /// </summary>
     public class CalibrationControl
     {
+        public Action<string>? SendSerialData { get; set; }
+
         // ── Sensor metadata — 3 sensor còn lại (đã bỏ Loadcell) ─────────────
         private static readonly string[] SensorNames = { "Thermistor", "Potentiometer", "Encoder" };
         private static readonly string[] SensorUnits = { "°C", "deg", "RPM" };
@@ -179,12 +181,26 @@ namespace SensorMonitorAndCalibration
                     "Chưa sẵn sàng", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            // TODO Phase 2: thay bằng lệnh Serial thực
-            MessageBox.Show(
-                $"[MCU] Sensor {i + 1} — {SensorNames[i]}\n\n" +
-                $"  a = {_a[i]:F6}\n  b = {_b[i]:F6}\n\n" +
-                "(Serial sẽ tích hợp ở giai đoạn 2)",
-                "Gửi về MCU", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            // Đóng gói lệnh gửi về MCU — định dạng: "CAL,<sensorIndex>,<a>,<b>\n"
+            string cmd = string.Format(
+                System.Globalization.CultureInfo.InvariantCulture,
+                "CAL,{0},{1:F6},{2:F6}\n", i, _a[i], _b[i]);
+
+            if (SendSerialData != null)
+            {
+                SendSerialData(cmd);
+                MessageBox.Show(
+                    $"Đã gửi về MCU:\n{cmd}",
+                    "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                // Chưa kết nối serial
+                MessageBox.Show(
+                    $"Chưa kết nối Serial!\n\nLệnh sẽ gửi:\n{cmd}",
+                    "Chưa kết nối", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         // ── Sensor selector ───────────────────────────────────────────────────

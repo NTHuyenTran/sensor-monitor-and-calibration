@@ -313,10 +313,22 @@ namespace SensorMonitorAndCalibration
                 txtAdcZero, txtRealZero, lblUnitZero,
                 txtAdcSpan, txtRealSpan, lblUnitSpan,
                 btnCaptureZero, btnCaptureSpan,
-                btnCalc, button1,           // btnCalc = "Tính hệ số", button1 = "Gửi về MCU"
+                btnCalc, button1,
                 formsPlotCalib,
                 lblFormula, lblCoefA, lblCoefB, lblStatus
             );
+
+            // ── Kết nối delegate gửi Serial ──────────────────────────────────────
+            _calib.SendSerialData = (cmd) =>
+            {
+                if (_serialPort == null || !_serialPort.IsOpen)
+                {
+                    MessageBox.Show("Serial chưa mở!", "Lỗi",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                _serialPort.Write(cmd);
+            };
         }
 
         // ── Setup tab Chart ─────────────────────────────────────────────────
@@ -384,7 +396,7 @@ namespace SensorMonitorAndCalibration
                 for (int i = 0; i < 3; i++)
                     if (!double.TryParse(parts[i],
                             System.Globalization.NumberStyles.Float,
-                            System.Globalization.CultureInfo.InvariantCulture,  // ← thêm dòng này
+                            System.Globalization.CultureInfo.InvariantCulture, 
                             out newAdc[i])) return;
 
                 this.Invoke(() =>
