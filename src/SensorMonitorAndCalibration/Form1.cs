@@ -184,20 +184,21 @@ namespace SensorMonitorAndCalibration
             int baud = int.Parse(_cmbBaudrate.SelectedItem!.ToString()!);
 
             // ── Phase 2: mở cổng thực ─────────────────────────────────────────
-            // try
-            // {
-            //     _serialPort = new SerialPort(port, baud, Parity.None, 8, StopBits.One);
-            //     _serialPort.Open();
-            // }
-            // catch (Exception ex)
-            // {
-            //     MessageBox.Show($"Không thể mở {port}:\n{ex.Message}",
-            //         "Lỗi Serial", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //     return;
-            // }
+            try
+            {
+                _serialPort = new SerialPort(port, baud, Parity.None, 8, StopBits.One);
+                _serialPort.Open();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Không thể mở {port}:\n{ex.Message}",
+                    "Lỗi Serial", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             // ── Phase 1: giả lập "đã kết nối" ────────────────────────────────
-            _isConnected = true;
+            //_isConnected = true;
+
             SetConnectionUI(connected: true, port: port, baud: baud);
         }
 
@@ -343,19 +344,19 @@ namespace SensorMonitorAndCalibration
         private void OnTimerTick(object? sender, EventArgs e)
         {
             // Phase 1: giả lập ADC thô — Phase 2: đọc từ _serialPort
-            _adcRaw[0] = _rng.NextDouble() * 3.3;   // Thermistor
-            _adcRaw[1] = _rng.NextDouble() * 3.3;   // Potentiometer
-            _adcRaw[2] = _rng.NextDouble() * 3.3;   // Encoder
+            //_adcRaw[0] = _rng.NextDouble() * 3.3;   // Thermistor
+            //_adcRaw[1] = _rng.NextDouble() * 3.3;   // Potentiometer
+            //_adcRaw[2] = _rng.NextDouble() * 3.3;   // Encoder
 
-            // Áp dụng hệ số calib để ra giá trị thực
-            for (int i = 0; i < 3; i++)
-            {
-                var (a, b) = _calib?.GetCoefficients(i) ?? (1.0, 0.0);
-                _realVals[i] = a * _adcRaw[i] + b;
-            }
+            //// Áp dụng hệ số calib để ra giá trị thực
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    var (a, b) = _calib?.GetCoefficients(i) ?? (1.0, 0.0);
+            //    _realVals[i] = a * _adcRaw[i] + b;
+            //}
 
             //// ── Phase 2: đọc từ buffer ─────────────────────────────────────────
-            //if (!_isConnected) return;
+            if (!_isConnected) return;
 
             // Cập nhật tab Monitor
             for (int i = 0; i < 3; i++)
