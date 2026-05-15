@@ -35,6 +35,7 @@
             formsPlot2 = new ScottPlot.WinForms.FormsPlot();
             flowLayoutPanel3 = new FlowLayoutPanel();
             btn_pc_2 = new Button();
+            imageList1 = new ImageList(components);
             btn_dts_2 = new Button();
             btn_csv_2 = new Button();
             panel7 = new Panel();
@@ -65,11 +66,10 @@
             panel6 = new Panel();
             label2 = new Label();
             flowLayoutPanel1 = new FlowLayoutPanel();
-            btn_chose_3 = new Button();
-            btn_chose_2 = new Button();
-            btn_chose_1 = new Button();
             label1 = new Label();
-            imageList1 = new ImageList(components);
+            btn_chose_1 = new Button();
+            btn_chose_2 = new Button();
+            btn_chose_3 = new Button();
             tableLayoutPanel1.SuspendLayout();
             panel3.SuspendLayout();
             flowLayoutPanel3.SuspendLayout();
@@ -150,11 +150,21 @@
             btn_pc_2.TabIndex = 0;
             btn_pc_2.UseVisualStyleBackColor = false;
             // 
+            // imageList1
+            // 
+            imageList1.ColorDepth = ColorDepth.Depth32Bit;
+            imageList1.ImageStream = (ImageListStreamer)resources.GetObject("imageList1.ImageStream");
+            imageList1.TransparentColor = Color.Transparent;
+            imageList1.Images.SetKeyName(0, "pause.png");
+            imageList1.Images.SetKeyName(1, "cont.png");
+            imageList1.Images.SetKeyName(2, "lookup.png");
+            imageList1.Images.SetKeyName(3, "save.png");
+            // 
             // btn_dts_2
             // 
             btn_dts_2.BackColor = Color.AliceBlue;
             btn_dts_2.Cursor = Cursors.Hand;
-            btn_dts_2.ImageIndex = 1;
+            btn_dts_2.ImageIndex = 2;
             btn_dts_2.ImageList = imageList1;
             btn_dts_2.Location = new Point(467, 3);
             btn_dts_2.Margin = new Padding(10, 3, 10, 3);
@@ -167,7 +177,7 @@
             // 
             btn_csv_2.BackColor = Color.AliceBlue;
             btn_csv_2.Cursor = Cursors.Hand;
-            btn_csv_2.ImageIndex = 2;
+            btn_csv_2.ImageIndex = 3;
             btn_csv_2.ImageList = imageList1;
             btn_csv_2.Location = new Point(418, 3);
             btn_csv_2.Margin = new Padding(10, 3, 10, 3);
@@ -244,7 +254,7 @@
             // 
             btn_dts_3.BackColor = Color.AliceBlue;
             btn_dts_3.Cursor = Cursors.Hand;
-            btn_dts_3.ImageIndex = 1;
+            btn_dts_3.ImageIndex = 2;
             btn_dts_3.ImageList = imageList1;
             btn_dts_3.Location = new Point(466, 3);
             btn_dts_3.Margin = new Padding(10, 3, 10, 3);
@@ -257,7 +267,7 @@
             // 
             btn_csv_3.BackColor = Color.AliceBlue;
             btn_csv_3.Cursor = Cursors.Hand;
-            btn_csv_3.ImageIndex = 2;
+            btn_csv_3.ImageIndex = 3;
             btn_csv_3.ImageList = imageList1;
             btn_csv_3.Location = new Point(417, 3);
             btn_csv_3.Margin = new Padding(10, 3, 10, 3);
@@ -448,7 +458,7 @@
             // 
             btn_dts_1.BackColor = Color.AliceBlue;
             btn_dts_1.Cursor = Cursors.Hand;
-            btn_dts_1.ImageIndex = 1;
+            btn_dts_1.ImageIndex = 2;
             btn_dts_1.ImageList = imageList1;
             btn_dts_1.Location = new Point(466, 3);
             btn_dts_1.Margin = new Padding(10, 3, 10, 3);
@@ -461,7 +471,7 @@
             // 
             btn_csv_1.BackColor = Color.AliceBlue;
             btn_csv_1.Cursor = Cursors.Hand;
-            btn_csv_1.ImageIndex = 2;
+            btn_csv_1.ImageIndex = 3;
             btn_csv_1.ImageList = imageList1;
             btn_csv_1.Location = new Point(417, 3);
             btn_csv_1.Margin = new Padding(10, 3, 10, 3);
@@ -504,31 +514,17 @@
             flowLayoutPanel1.Size = new Size(1141, 34);
             flowLayoutPanel1.TabIndex = 7;
             // 
-            // btn_chose_3
+            // label1
             // 
-            btn_chose_3.Cursor = Cursors.Hand;
-            btn_chose_3.FlatStyle = FlatStyle.Flat;
-            btn_chose_3.ForeColor = Color.MidnightBlue;
-            btn_chose_3.Location = new Point(585, 3);
-            btn_chose_3.Margin = new Padding(15, 3, 15, 3);
-            btn_chose_3.Name = "btn_chose_3";
-            btn_chose_3.Size = new Size(190, 28);
-            btn_chose_3.TabIndex = 8;
-            btn_chose_3.Text = "Sensor 3 - Encoder";
-            btn_chose_3.UseVisualStyleBackColor = true;
-            // 
-            // btn_chose_2
-            // 
-            btn_chose_2.Cursor = Cursors.Hand;
-            btn_chose_2.FlatStyle = FlatStyle.Flat;
-            btn_chose_2.ForeColor = Color.MidnightBlue;
-            btn_chose_2.Location = new Point(365, 3);
-            btn_chose_2.Margin = new Padding(15, 3, 15, 3);
-            btn_chose_2.Name = "btn_chose_2";
-            btn_chose_2.Size = new Size(190, 28);
-            btn_chose_2.TabIndex = 7;
-            btn_chose_2.Text = "Sensor 2 - Potentiometer";
-            btn_chose_2.UseVisualStyleBackColor = true;
+            label1.Anchor = AnchorStyles.None;
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            label1.Location = new Point(15, 7);
+            label1.Margin = new Padding(15, 0, 15, 0);
+            label1.Name = "label1";
+            label1.Size = new Size(100, 20);
+            label1.TabIndex = 5;
+            label1.Text = "Chọn sensor:";
             // 
             // btn_chose_1
             // 
@@ -543,27 +539,31 @@
             btn_chose_1.Text = "Sensor 1 - Thermistor";
             btn_chose_1.UseVisualStyleBackColor = true;
             // 
-            // label1
+            // btn_chose_2
             // 
-            label1.Anchor = AnchorStyles.None;
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            label1.Location = new Point(15, 7);
-            label1.Margin = new Padding(15, 0, 15, 0);
-            label1.Name = "label1";
-            label1.Size = new Size(100, 20);
-            label1.TabIndex = 5;
-            label1.Text = "Chọn sensor:";
+            btn_chose_2.Cursor = Cursors.Hand;
+            btn_chose_2.FlatStyle = FlatStyle.Flat;
+            btn_chose_2.ForeColor = Color.MidnightBlue;
+            btn_chose_2.Location = new Point(365, 3);
+            btn_chose_2.Margin = new Padding(15, 3, 15, 3);
+            btn_chose_2.Name = "btn_chose_2";
+            btn_chose_2.Size = new Size(190, 28);
+            btn_chose_2.TabIndex = 7;
+            btn_chose_2.Text = "Sensor 2 - Potentiometer";
+            btn_chose_2.UseVisualStyleBackColor = true;
             // 
-            // imageList1
+            // btn_chose_3
             // 
-            imageList1.ColorDepth = ColorDepth.Depth32Bit;
-            imageList1.ImageStream = (ImageListStreamer)resources.GetObject("imageList1.ImageStream");
-            imageList1.TransparentColor = Color.Transparent;
-            imageList1.Images.SetKeyName(0, "pause.png");
-            imageList1.Images.SetKeyName(1, "lookup.png");
-            imageList1.Images.SetKeyName(2, "save.png");
-            imageList1.Images.SetKeyName(3, "cont.png");
+            btn_chose_3.Cursor = Cursors.Hand;
+            btn_chose_3.FlatStyle = FlatStyle.Flat;
+            btn_chose_3.ForeColor = Color.MidnightBlue;
+            btn_chose_3.Location = new Point(585, 3);
+            btn_chose_3.Margin = new Padding(15, 3, 15, 3);
+            btn_chose_3.Name = "btn_chose_3";
+            btn_chose_3.Size = new Size(190, 28);
+            btn_chose_3.TabIndex = 8;
+            btn_chose_3.Text = "Sensor 3 - Encoder";
+            btn_chose_3.UseVisualStyleBackColor = true;
             // 
             // ChartControl
             // 

@@ -36,8 +36,9 @@ namespace SensorMonitorAndCalibration
         private SerialPort? _serialPort;
         private bool _isConnected = false;
 
-        // ── Controller calib ─────────────────────────────────────────────────
+        // ── Controller calib and chart  ─────────────────────────────────────────────────
         private CalibrationControl? _calib;
+        private ChartControl? _myChart;
 
         // ─────────────────────────────────────────────────────────────────────
         public Form1()
@@ -334,8 +335,8 @@ namespace SensorMonitorAndCalibration
         // ── Setup tab Chart ─────────────────────────────────────────────────
         private void SetupChartTab()
         {
-            ChartControl chartControl = new ChartControl { Dock = DockStyle.Fill };
-            tabChart.Controls.Add(chartControl);
+            _myChart = new ChartControl { Dock = DockStyle.Fill };
+            tabChart.Controls.Add(_myChart);
         }
 
         // ── Timer tick: cập nhật dữ liệu mỗi giây ────────────────────────────
@@ -360,8 +361,9 @@ namespace SensorMonitorAndCalibration
             for (int i = 0; i < 3; i++)
                 UpdateSensorPanel(i, _realVals[i]);
 
-            // Cập nhật tab Calib (live reading)
+            // Cập nhật tab Calib và Chart (live reading)
             _calib?.SetLiveAdcValues(_adcRaw, _realVals);
+            _myChart?.UpdateChartData(_realVals);
 
             // Status bar
             if (_lblTime != null)
