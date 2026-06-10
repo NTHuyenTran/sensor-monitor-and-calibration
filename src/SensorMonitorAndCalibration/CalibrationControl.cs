@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace SensorMonitorAndCalibration
@@ -22,6 +23,8 @@ namespace SensorMonitorAndCalibration
         private readonly double[] _a = new double[3];
         private readonly double[] _b = new double[3];
         private readonly bool[] _calibrated = new bool[3];
+        private readonly bool[] _hasA = new bool[3];
+        private readonly bool[] _hasB = new bool[3];
 
         private int _selectedSensor = 0;
         private double _currentAdc = 0.0;
@@ -68,6 +71,13 @@ namespace SensorMonitorAndCalibration
             _lblCoefA = lblCoefA;
             _lblCoefB = lblCoefB;
             _lblStatus = lblStatus;
+
+            // Mặc định identity để nếu chưa calib thì y = x.
+            for (int i = 0; i < 3; i++)
+            {
+                _a[i] = 1.0;
+                _b[i] = 0.0;
+            }
 
             // Thêm label giá trị live vào pnlLive (designer chỉ có title labels)
             _lblLiveAdcValue = new Label
@@ -124,28 +134,57 @@ namespace SensorMonitorAndCalibration
                 : (1.0, 0.0);
         }
 
+        // Nhận hệ số từ frame MCU: *A1,value# / *B1,value# ...
+        public void SetCoefficientFromMcu(int sensorIndex, char coeffType, double value)
+        {
+            if (sensorIndex < 0 || sensorIndex >= 3) return;
+
+            coeffType = char.ToUpperInvariant(coeffType);
+            if (coeffType == 'A')
+            {
+                _a[sensorIndex] = value;
+                _hasA[sensorIndex] = true;
+            }
+            else if (coeffType == 'B')
+            {
+                _b[sensorIndex] = value;
+                _hasB[sensorIndex] = true;
+            }
+            else
+            {
+                return;
+            }
+
+            // Khi đã có đủ A và B thì xem như sensor đã có hệ số hợp lệ.
+            if (_hasA[sensorIndex] && _hasB[sensorIndex])
+                _calibrated[sensorIndex] = true;
+
+            if (_selectedSensor == sensorIndex)
+                RefreshCoefficientLabels(sensorIndex, fromMcu: true);
+        }
+
         // ── Capture ───────────────────────────────────────────────────────────
         private void BtnCaptureZero_Click(object? sender, EventArgs e)
         {
-            _txtAdcZero.Text = _currentAdc.ToString("F4");
-            _txtRealZero.Text = DefaultZero[_selectedSensor].ToString("F1");
+            _txtAdcZero.Text = _currentAdc.ToString("F4", CultureInfo.InvariantCulture);
+            _txtRealZero.Text = DefaultZero[_selectedSensor].ToString("F1", CultureInfo.InvariantCulture);
         }
 
         private void BtnCaptureSpan_Click(object? sender, EventArgs e)
         {
-            _txtAdcSpan.Text = _currentAdc.ToString("F4");
-            _txtRealSpan.Text = DefaultSpan[_selectedSensor].ToString("F1");
+            _txtAdcSpan.Text = _currentAdc.ToString("F4", CultureInfo.InvariantCulture);
+            _txtRealSpan.Text = DefaultSpan[_selectedSensor].ToString("F1", CultureInfo.InvariantCulture);
         }
 
         // ── Calculate ─────────────────────────────────────────────────────────
         private void BtnCalc_Click(object? sender, EventArgs e)
         {
-            if (!double.TryParse(_txtAdcZero.Text, out double x1) ||
-                !double.TryParse(_txtRealZero.Text, out double y1) ||
-                !double.TryParse(_txtAdcSpan.Text, out double x2) ||
-                !double.TryParse(_txtRealSpan.Text, out double y2))
+            if (!double.TryParse(_txtAdcZero.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out double x1) ||
+                !double.TryParse(_txtRealZero.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out double y1) ||
+                !double.TryParse(_txtAdcSpan.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out double x2) ||
+                !double.TryParse(_txtRealSpan.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out double y2))
             {
-                MessageBox.Show("Vui lòng nhập đầy đủ và đúng định dạng số.",
+                MessageBox.Show("Vui lòng nhập đầy đủ và đúng định dạng số. Dùng dấu chấm cho số thập phân, ví dụ 1.234.",
                     "Lỗi nhập liệu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -159,33 +198,52 @@ namespace SensorMonitorAndCalibration
             int i = _selectedSensor;
             _a[i] = (y2 - y1) / (x2 - x1);
             _b[i] = y1 - _a[i] * x1;
+            _hasA[i] = true;
+            _hasB[i] = true;
             _calibrated[i] = true;
 
+            RefreshCoefficientLabels(i, fromMcu: false);
+            DrawCalibLine(x1, y1, x2, y2, i);
+        }
+
+        private void RefreshCoefficientLabels(int i, bool fromMcu)
+        {
             string bSign = _b[i] >= 0 ? "+" : "−";
             _lblFormula.Text = $"y  =  {_a[i]:F4} × x  {bSign}  {Math.Abs(_b[i]):F4}";
             _lblCoefA.Text = $"Hệ số  a  =  {_a[i]:F6}";
             _lblCoefB.Text = $"Hệ số  b  =  {_b[i]:F6}";
-            _lblStatus.Text = $"✓ Sensor {i + 1} ({SensorNames[i]}) — Đã calibrate  [{SensorUnits[i]}]";
-            _lblStatus.ForeColor = Color.FromArgb(30, 130, 30);
 
-            DrawCalibLine(x1, y1, x2, y2, i);
+            if (_calibrated[i])
+            {
+                string source = fromMcu ? "Đã load từ MCU Flash" : "Đã calibrate";
+                _lblStatus.Text = $"✓ Sensor {i + 1} ({SensorNames[i]}) — {source}  [{SensorUnits[i]}]";
+                _lblStatus.ForeColor = Color.FromArgb(30, 130, 30);
+            }
+            else
+            {
+                _lblStatus.Text = $"Sensor {i + 1} ({SensorNames[i]}) — mới nhận một phần hệ số từ MCU";
+                _lblStatus.ForeColor = Color.FromArgb(180, 120, 20);
+            }
         }
 
         // ── Send to MCU ───────────────────────────────────────────────────────
         private void BtnSend_Click(object? sender, EventArgs e)
         {
-            int i = _selectedSensor;
-            if (!_calibrated[i])
+            // Theo frame mới: gửi đồng thời 6 hệ số trong 1 frame duy nhất
+            // *S,<A1>,<B1>,<A2>,<B2>,<A3>,<B3>#
+            if (!AllSensorsHaveCoefficients())
             {
-                MessageBox.Show($"Sensor {i + 1} ({SensorNames[i]}) chưa được calibrate.",
-                    "Chưa sẵn sàng", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    "Frame *S cần đủ 6 hệ số A1,B1,A2,B2,A3,B3.\n" +
+                    "Hãy calibrate đủ 3 sensor hoặc bấm 'Đọc hệ số Flash' để load hệ số đang có từ MCU trước khi lưu.",
+                    "Chưa đủ hệ số", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // Đóng gói lệnh gửi về MCU — định dạng: "CAL,<sensorIndex>,<a>,<b>\n"
             string cmd = string.Format(
-                System.Globalization.CultureInfo.InvariantCulture,
-                "CAL,{0},{1:F6},{2:F6}\n", i, _a[i], _b[i]);
+                CultureInfo.InvariantCulture,
+                "*S,{0:F6},{1:F6},{2:F6},{3:F6},{4:F6},{5:F6}#",
+                _a[0], _b[0], _a[1], _b[1], _a[2], _b[2]);
 
             if (SendSerialData != null)
             {
@@ -196,11 +254,20 @@ namespace SensorMonitorAndCalibration
             }
             else
             {
-                // Chưa kết nối serial
                 MessageBox.Show(
                     $"Chưa kết nối Serial!\n\nLệnh sẽ gửi:\n{cmd}",
                     "Chưa kết nối", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+
+        private bool AllSensorsHaveCoefficients()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (!_calibrated[i])
+                    return false;
+            }
+            return true;
         }
 
         // ── Sensor selector ───────────────────────────────────────────────────
@@ -221,19 +288,14 @@ namespace SensorMonitorAndCalibration
 
             _lblUnitZero.Text = SensorUnits[index];
             _lblUnitSpan.Text = SensorUnits[index];
-            _txtRealZero.Text = DefaultZero[index].ToString("F1");
-            _txtRealSpan.Text = DefaultSpan[index].ToString("F1");
+            _txtRealZero.Text = DefaultZero[index].ToString("F1", CultureInfo.InvariantCulture);
+            _txtRealSpan.Text = DefaultSpan[index].ToString("F1", CultureInfo.InvariantCulture);
             _txtAdcZero.Text = "0.00";
             _txtAdcSpan.Text = "0.00";
 
-            if (_calibrated[index])
+            if (_calibrated[index] || _hasA[index] || _hasB[index])
             {
-                string bSign = _b[index] >= 0 ? "+" : "−";
-                _lblFormula.Text = $"y  =  {_a[index]:F4} × x  {bSign}  {Math.Abs(_b[index]):F4}";
-                _lblCoefA.Text = $"Hệ số  a  =  {_a[index]:F6}";
-                _lblCoefB.Text = $"Hệ số  b  =  {_b[index]:F6}";
-                _lblStatus.Text = $"✓ Sensor {index + 1} ({SensorNames[index]}) — Đã calibrate";
-                _lblStatus.ForeColor = Color.FromArgb(30, 130, 30);
+                RefreshCoefficientLabels(index, fromMcu: false);
             }
             else
             {
