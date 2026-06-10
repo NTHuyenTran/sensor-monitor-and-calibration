@@ -497,7 +497,7 @@
             btnSensor3.ForeColor = Color.MidnightBlue;
             btnSensor3.Location = new Point(819, 9);
             btnSensor3.Name = "btnSensor3";
-            btnSensor3.Size = new Size(190, 28);
+            btnSensor3.Size = new Size(198, 28);
             btnSensor3.TabIndex = 3;
             btnSensor3.Text = "Sensor 3 - Encoder";
             btnSensor3.UseVisualStyleBackColor = true;
@@ -507,9 +507,9 @@
             btnSensor2.Cursor = Cursors.Hand;
             btnSensor2.FlatStyle = FlatStyle.Flat;
             btnSensor2.ForeColor = Color.MidnightBlue;
-            btnSensor2.Location = new Point(506, 9);
+            btnSensor2.Location = new Point(507, 9);
             btnSensor2.Name = "btnSensor2";
-            btnSensor2.Size = new Size(190, 28);
+            btnSensor2.Size = new Size(207, 28);
             btnSensor2.TabIndex = 2;
             btnSensor2.Text = "Sensor 2 - Potentiometer";
             btnSensor2.UseVisualStyleBackColor = true;
@@ -521,7 +521,7 @@
             btnSensor1.ForeColor = Color.MidnightBlue;
             btnSensor1.Location = new Point(201, 9);
             btnSensor1.Name = "btnSensor1";
-            btnSensor1.Size = new Size(190, 28);
+            btnSensor1.Size = new Size(198, 28);
             btnSensor1.TabIndex = 1;
             btnSensor1.Text = "Sensor 1 - Thermistor";
             btnSensor1.UseVisualStyleBackColor = true;
