@@ -15,7 +15,6 @@ This is a specialized Graphical User Interface (GUI) application developed using
 ### 1. 🖥 Real-time Monitoring (Monitor)
 A minimalist and intuitive interface focusing on real-time measurement parameters:
 * **Temperature:** 0 - 100°C (Thermistor)
-* **Weight/Mass:** 0 - 5 kg (Loadcell)
 * **Angle:** 0 - 300° (Potentiometer)
 * **Speed:** 0 - 500 RPM (Encoder)
 
