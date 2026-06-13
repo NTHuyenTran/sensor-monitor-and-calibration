@@ -14,7 +14,7 @@ namespace SensorMonitorAndCalibration
 {
     public partial class ChartControl : UserControl
     {
-        // ── Arrays để quản lý chung 3 đồ thị, tránh lặp code ───────────────
+        // ── Arrays để quản lý chung 3 đồ thị ────────────────────────────────
         private readonly FormsPlot[] _plots;
         private readonly ScottPlot.Plottables.DataLogger[] _loggers;
 
@@ -23,13 +23,17 @@ namespace SensorMonitorAndCalibration
         // Quản lý các nút bấm tương ứng với từng đồ thị
         private readonly Button[] _btnPc;
         private readonly Button[] _btnCsv;
-        private readonly Button[] _btnDts;
 
         // Trạng thái Pause của từng đồ thị
         private readonly bool[] _isPaused = { false, false, false };
 
         // Lưu trữ dữ liệu thô để xuất CSV (thời gian, giá trị)
         private readonly List<(DateTime Time, double Value)>[] _exportData;
+        private const int MAX_CSV_ROWS = 500000; // Giới hạn an toàn chống tràn RAM
+
+        // ── Biến phục vụ tính toán Sampling Rate (s_rate) ────────────────────
+        private int _sampleCount = 0;
+        private DateTime _lastRateCalcTime;
 
         // Tên các cảm biến (đồng bộ với Form1)
         private readonly string[] _sensorNames = { "Thermistor (°C)", "Potentiometer (deg)", "Encoder (RPM)" };
@@ -43,14 +47,14 @@ namespace SensorMonitorAndCalibration
         {
             InitializeComponent();
 
-            // 1. Gom các controls vào mảng để dễ dùng vòng lặp
             _plots = new[] { formsPlot1, formsPlot2, formsPlot3 };
             _btnPc = new[] { btn_pc_1, btn_pc_2, btn_pc_3 };
             _btnCsv = new[] { btn_csv_1, btn_csv_2, btn_csv_3 };
-            _btnDts = new[] { btn_dts_1, btn_dts_2, btn_dts_3 };
 
             _loggers = new ScottPlot.Plottables.DataLogger[3];
             _startTime = DateTime.Now;
+            _lastRateCalcTime = DateTime.Now;
+
             _exportData = new List<(DateTime, double)>[]
             {
                 new(), new(), new()
@@ -64,42 +68,33 @@ namespace SensorMonitorAndCalibration
         {
             for (int i = 0; i < 3; i++)
             {
-                // Khởi tạo đồ thị
-                _plots[i].Plot.Title($"Biểu đồ {_sensorNames[i]}");
                 _plots[i].Plot.XLabel("Thời gian (s)");
                 _plots[i].Plot.YLabel("Giá trị");
-                //_plots[i].Plot.Axes.DateTimeTicksBottom();
 
-                // Thêm DataLogger để vẽ realtime
                 _loggers[i] = _plots[i].Plot.Add.DataLogger();
                 _loggers[i].Color = _lineColors[i];
                 _loggers[i].LineWidth = 2;
                 _loggers[i].ManageAxisLimits = true;
                 _plots[i].Refresh();
 
-                // ImageIndex 0 là Pause, 1 là Play
-                 _btnPc[i].ImageIndex = 0;
+                _btnPc[i].ImageIndex = 0;
             }
         }
 
         private void SetupEvents()
         {
-            // Gán sự kiện cho từng nút riêng lẻ
             for (int i = 0; i < 3; i++)
             {
-                int index = i; // Bắt buộc phải có biến cục bộ để dùng trong lambda (Closure)
-
+                int index = i;
                 _btnPc[index].Click += (s, e) => TogglePause(index);
                 _btnCsv[index].Click += (s, e) => ExportCsv(index);
-                _btnDts[index].Click += (s, e) => ShowDatasheetLogic(index);
             }
 
-            // Gán sự kiện cho các nút ALL
             btn_all_pc.Click += (s, e) => ToggleAllPause();
             btn_all_csv.Click += (s, e) => ExportAllCsv();
         }
 
-        // ── API để Form1 gọi và bơm dữ liệu vào mỗi giây ────────────────────
+        // ── API để Form1 gọi và bơm dữ liệu ở tốc độ cao (50ms) ───────────────
         public void UpdateChartData(double[] realValues)
         {
             if (realValues == null || realValues.Length < 3) return;
@@ -107,22 +102,44 @@ namespace SensorMonitorAndCalibration
             DateTime now = DateTime.Now;
             double elapsedSec = (now - _startTime).TotalSeconds;
 
+            // 1. Tính toán Tốc độ lấy mẫu thực tế (Sampling Rate - Hz)
+            _sampleCount++;
+            if ((now - _lastRateCalcTime).TotalSeconds >= 1.0)
+            {
+                int currentRate = _sampleCount;
+                _sampleCount = 0;
+                _lastRateCalcTime = now;
+
+                // Cập nhật lên Label trạng thái (Giả định control tên là 'status')
+                if (status != null)
+                {
+                    status.BackColor = Color.DarkGreen;
+                    s_rate.Text = $"Tốc độ thực tế: {currentRate} Hz";
+                }
+            }
+
+            // 2. Bơm dữ liệu vào đồ thị và List CSV
             for (int i = 0; i < 3; i++)
             {
                 if (!_isPaused[i])
                 {
-                    // 1. Thêm vào DataLogger để vẽ đồ thị
                     _loggers[i].Add(elapsedSec, realValues[i]);
                     _plots[i].Plot.Axes.AutoScale();
                     _plots[i].Refresh();
 
-                    // 2. Thêm vào List để dành xuất CSV sau này
-                    _exportData[i].Add((now, realValues[i]));
+                    // Cảnh báo chống tràn RAM nếu treo máy đo quá lâu
+                    if (_exportData[i].Count < MAX_CSV_ROWS)
+                    {
+                        _exportData[i].Add((now, realValues[i]));
+                    }
+                    else if (_exportData[i].Count == MAX_CSV_ROWS)
+                    {
+                        MessageBox.Show($"Dữ liệu Sensor {i + 1} đã đạt giới hạn an toàn {MAX_CSV_ROWS} dòng.\nPhần mềm sẽ ngừng lưu thêm dữ liệu để tránh treo máy. Vui lòng xuất CSV ngay!",
+                            "Cảnh báo bộ nhớ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        _exportData[i].Add((now, double.NaN)); // Đánh dấu điểm tràn
+                    }
                 }
             }
-
-            // Cập nhật nhãn trạng thái tổng
-            if (status != null) status.Text = "Trạng thái: Đang cập nhật dữ liệu...";
         }
 
         // ── Logic Pause/Continue ──────────────────────────────────────────────
