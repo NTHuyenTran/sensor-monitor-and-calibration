@@ -14,7 +14,7 @@ namespace SensorMonitorAndCalibration
         public Action<string>? SendSerialData { get; set; }
 
         // ── Sensor metadata — 3 sensor còn lại (đã bỏ Loadcell) ─────────────
-        private static readonly string[] SensorNames = { "Thermistor", "Potentiometer", "Encoder" };
+        private static readonly string[] SensorNames = { "Thermistor", "Potentiometer", "Laser" };
         private static readonly string[] SensorUnits = { "°C", "deg", "RPM" };
         private static readonly double[] DefaultZero = { 0, 0, 0 };
         private static readonly double[] DefaultSpan = { 100, 300, 500 };
@@ -102,7 +102,7 @@ namespace SensorMonitorAndCalibration
             // Cập nhật text button đúng 3 sensor còn lại
             _btnSensor1.Text = "Sensor 1 — Thermistor";
             _btnSensor2.Text = "Sensor 2 — Potentiometer";
-            _btnSensor3.Text = "Sensor 3 — Encoder";
+            _btnSensor3.Text = "Sensor 3 — Laser";
 
             // Wire events
             _btnSensor1.Click += (_, __) => SelectSensor(0);

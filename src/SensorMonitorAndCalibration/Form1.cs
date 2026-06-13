@@ -11,7 +11,7 @@ namespace SensorMonitorAndCalibration
     public partial class Form1 : Form
     {
         // ── Chọn chế độ chạy ────────────────────────────────────────────────
-        private const bool USE_SIMULATION = true;
+        private const bool USE_SIMULATION = false;
 
         // ── 3 Timer độc lập cho 3 Tab ────────────────────────────────────────
         private readonly System.Windows.Forms.Timer _monitorTimer = new(); // Tab Monitor: 1000ms (1Hz)
@@ -24,7 +24,7 @@ namespace SensorMonitorAndCalibration
         private readonly double[] _adcRaw = new double[3];
         private readonly double[] _realVals = new double[3];
 
-        private static readonly string[] SensorNames = { "Thermistor", "Potentiometer", "Encoder" };
+        private static readonly string[] SensorNames = { "Thermistor", "Potentiometer", "Laser" };
         private static readonly string[] SensorUnits = { "°C", "deg", "RPM" };
         private static readonly double[] SensorMaxReal = { 100.0, 300.0, 500.0 };
 
@@ -144,7 +144,7 @@ namespace SensorMonitorAndCalibration
             {
                 _adcRaw[0] = _rng.NextDouble() * 3.3;   // Thermistor
                 _adcRaw[1] = _rng.NextDouble() * 3.3;   // Potentiometer
-                _adcRaw[2] = _rng.NextDouble() * 3.3;   // Encoder
+                _adcRaw[2] = _rng.NextDouble() * 3.3;   // Laser
             }
 
             if (USE_SIMULATION || _isConnected)

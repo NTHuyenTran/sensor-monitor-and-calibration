@@ -36,7 +36,7 @@ namespace SensorMonitorAndCalibration
         private DateTime _lastRateCalcTime;
 
         // Tên các cảm biến (đồng bộ với Form1)
-        private readonly string[] _sensorNames = { "Thermistor (°C)", "Potentiometer (deg)", "Encoder (RPM)" };
+        private readonly string[] _sensorNames = { "Thermistor (°C)", "Potentiometer (deg)", "Laser (m)" };
         private readonly ScottPlot.Color[] _lineColors = {
             new ScottPlot.Color(200, 50, 50),   // Đỏ
             new ScottPlot.Color(50, 200, 50),   // Xanh lá
@@ -235,7 +235,7 @@ namespace SensorMonitorAndCalibration
                     StringBuilder sb = new StringBuilder();
 
                     // 1. Tạo Header (Tiêu đề 4 cột)
-                    sb.AppendLine("Timestamp,Thermistor (degC),Potentiometer (deg),Encoder (RPM)");
+                    sb.AppendLine("Timestamp,Thermistor (degC),Potentiometer (deg),Laser (m)");
 
                     // 2. Gom tất cả các mốc thời gian (Timestamp) của cả 3 sensor lại, 
                     // loại bỏ các mốc trùng lặp và sắp xếp theo thứ tự thời gian tăng dần.
